@@ -51,3 +51,7 @@
 
 <p>지훈이가 미로를 탈출할 수 있는 경우에는 가장 빠른 탈출시간을 출력한다. </p>
 
+
+![image](https://github.com/aNN-algorithm/Backjoon/assets/149382038/0c70b3a6-d47d-4941-bca8-c8702bab0ba1)
+![image](https://github.com/aNN-algorithm/Backjoon/assets/149382038/0acc59ef-1e6b-4872-9029-a7ca8b60bbbd)
+
