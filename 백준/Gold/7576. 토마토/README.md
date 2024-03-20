@@ -34,3 +34,8 @@
 
  <p>여러분은 토마토가 모두 익을 때까지의 최소 날짜를 출력해야 한다. 만약, 저장될 때부터 모든 토마토가 익어있는 상태이면 0을 출력해야 하고, 토마토가 모두 익지는 못하는 상황이면 -1을 출력해야 한다.</p>
 
+![image](https://github.com/aNN-algorithm/Backjoon/assets/149382038/5b8f627b-76f3-4f59-85e4-c1d8a949270a)
+![image](https://github.com/aNN-algorithm/Backjoon/assets/149382038/2cd40607-cc61-4874-9b65-d1f2e83220a0)
+![image](https://github.com/aNN-algorithm/Backjoon/assets/149382038/7a7f2bca-3b54-4f29-b53a-bf4a5ef3586e)
+
+
