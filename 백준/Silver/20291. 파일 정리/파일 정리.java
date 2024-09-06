@@ -20,19 +20,16 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        // 입력 받은, 파일을 HashMap에 저장
-        HashMap<String, Integer> map = new HashMap<>();
+        // 입력 받은, 파일을 Map에 저장
+        Map<String, Integer> map = new TreeMap<>();
         for (int i = 0; i < n; i++) {
             String[] command = br.readLine().split("\\.");
             map.put(command[1], map.getOrDefault(command[1], 0) + 1);
         }
 
-        // 오름차순
-        List<String> keyList = new ArrayList<>(map.keySet());
-        keyList.sort(Comparator.naturalOrder());
-
-        for (String s : keyList) {
-            System.out.println(s + " " + map.get(s));
+        // 오름차순 출력
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
         }
     }
 }
