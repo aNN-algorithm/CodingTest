@@ -29,7 +29,7 @@ public class Main {
 
         // 오름차순
         List<String> keyList = new ArrayList<>(map.keySet());
-        keyList.sort((s1, s2) -> s1.compareTo(s2));
+        keyList.sort(Comparator.naturalOrder());
 
         for (String s : keyList) {
             System.out.println(s + " " + map.get(s));
