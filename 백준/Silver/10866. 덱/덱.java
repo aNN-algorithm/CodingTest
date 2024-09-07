@@ -1,59 +1,58 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ *
+ -----------------------------------------------------------------------------
+ * 6 : 덱(10866)
+ * https://www.acmicpc.net/problem/10866
+ *
+ * 입력된 문자열을 공백 기준으로 파싱하여
+ * 명령어에 따라 Deque 에 입력 및 추가 실행
+ *
+ -----------------------------------------------------------------------------
+ */
+
 public class Main {
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+
         Deque<Integer> deque = new ArrayDeque<>();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder answer = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            String[] command = br.readLine().split(" ");
 
-        for (int i = 0; i < T; i++) {
-            String[] comm = br.readLine().split(" ");
-
-            if (comm[0].equals("push_back")) {
-                deque.addLast(Integer.parseInt(comm[1]));
-            } else if (comm[0].equals("push_front")) {
-                deque.addFirst(Integer.parseInt(comm[1]));
-            } else if (comm[0].equals("front")) {
-                if (deque.isEmpty()) {
-                    sb.append(-1).append("\n");
-                } else {
-                    sb.append(deque.peekFirst()).append("\n");
-                }
-            } else if (comm[0].equals("back")) {
-                if (deque.isEmpty()) {
-                    sb.append(-1).append("\n");
-                } else {
-                    sb.append(deque.peekLast()).append("\n");
-                }
-            } else if (comm[0].equals("size")) {
-                sb.append(deque.size()).append("\n");
-            } else if (comm[0].equals("empty")) {
-                if (deque.isEmpty()) {
-                    sb.append(1).append("\n");
-                } else {
-                    sb.append(0).append("\n");
-                }
-            } else if (comm[0].equals("pop_front")) {
-                if (deque.isEmpty()) {
-                    sb.append(-1).append("\n");
-                } else {
-                    sb.append(deque.pollFirst()).append("\n");
-                }
-            } else if (comm[0].equals("pop_back")) {
-                if (deque.isEmpty()) {
-                    sb.append(-1).append("\n");
-                } else {
-                    sb.append(deque.pollLast()).append("\n");
-                }
+            if (command[0].equals("push_front")) {
+                deque.addFirst(Integer.parseInt(command[1]));
+            } else if (command[0].equals("push_back")) {
+                deque.addLast(Integer.parseInt(command[1]));
+            } else if (command[0].equals("pop_front")) {
+                if (deque.isEmpty()) answer.append("-1");
+                else answer.append(deque.removeFirst());
+                answer.append("\n");
+            } else if (command[0].equals("pop_back")) {
+                if (deque.isEmpty()) answer.append("-1");
+                else answer.append(deque.removeLast());
+                answer.append("\n");
+            } else if (command[0].equals("size")) {
+                answer.append(deque.size());
+                answer.append("\n");
+            } else if (command[0].equals("empty")) {
+                if (deque.isEmpty()) answer.append("1");
+                else answer.append("0");
+                answer.append("\n");
+            } else if (command[0].equals("front")) {
+                if (deque.isEmpty()) answer.append("-1");
+                else answer.append(deque.peekFirst());
+                answer.append("\n");
+            } else if (command[0].equals("back")) {
+                if (deque.isEmpty()) answer.append("-1");
+                else answer.append(deque.peekLast());
+                answer.append("\n");
             }
         }
-
-        System.out.println(sb);
+        System.out.println(answer);
     }
 }
