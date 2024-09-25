@@ -1,48 +1,35 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.Buffer;
-import java.util.Scanner;
+import java.io.*;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuffer sb = new StringBuffer();
+        int n = Integer.parseInt(br.readLine());
 
-        int T = Integer.parseInt(br.readLine());
         Stack<Integer> stack = new Stack<>();
-
-        for (int i = 0; i < T; i++) {
-            StringTokenizer str = new StringTokenizer(br.readLine(), " ");
-            String comm = str.nextToken();
-
-            if (comm.equals("push")) {
-                int num = Integer.parseInt(str.nextToken());
-                stack.add(num);
-            } else if (comm.equals("top")) {
-                if (stack.isEmpty()) {
-                    sb.append(-1).append('\n');
-                } else {
-                    sb.append(stack.peek()).append('\n');
-                }
-            } else if (comm.equals("size")) {
-                sb.append(stack.size()).append('\n');
-            } else if (comm.equals("empty")) {
-                if (stack.isEmpty()) {
-                    sb.append(1).append('\n');
-                } else {
-                    sb.append(0).append('\n');
-                }
-            } else if (comm.equals("pop")) {
-                if (stack.isEmpty()) {
-                    sb.append(-1).append('\n');
-                } else {
-                    sb.append(stack.pop()).append('\n');
-                }
+        StringBuilder answer = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            String[] commands = br.readLine().split(" ");
+            String command = commands[0];
+            switch (command) {
+                case "push":
+                    stack.push(Integer.parseInt(commands[1]));
+                    break;
+                case "pop":
+                    answer.append(stack.isEmpty() ?  -1 : stack.pop()).append("\n");
+                    break;
+                case "size":
+                    answer.append(stack.size()).append("\n");
+                    break;
+                case "empty":
+                    answer.append(stack.isEmpty() ? 1 : 0).append("\n");
+                    break;
+                case "top":
+                    answer.append(stack.isEmpty() ? -1 : stack.peek()).append("\n");
+                    break;
             }
         }
-        System.out.println(sb);
+
+        System.out.println(answer);
     }
 }
