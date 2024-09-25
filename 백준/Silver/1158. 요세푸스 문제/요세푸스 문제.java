@@ -1,41 +1,34 @@
+import java.io.*;
 import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.Queue;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] input = br.readLine().split(" ");
+        int n = Integer.parseInt(input[0]);
+        int k = Integer.parseInt(input[1]) - 1;
 
-        int n = sc.nextInt();
-        int k = sc.nextInt();
-
-        LinkedList list = new LinkedList();
-
-        for (int i = 1; i <= n; i++) {
-            list.add(i);
+        Queue<Integer> queue = new LinkedList<>();
+        for (Integer i = 1; i <= n; i++) {
+            queue.add(i);
         }
-        
-        LinkedList yo_list = new LinkedList();
 
-        int i = 0;
-        while (true) {
-            if (yo_list.size() == n) {
-                break;
-            }
-            if ((i + 1) % k != 0) {
-                list.add(list.poll());
+        StringBuilder answer = new StringBuilder();
+        answer.append("<");
+
+        int cursor = 0;
+        while (!queue.isEmpty()) {
+            if (cursor == k) {
+                answer.append(queue.poll()).append(queue.isEmpty() ? "" : ", ");
+                cursor = 0;
             } else {
-                yo_list.add(list.poll());
+                queue.offer(queue.poll());
+                cursor++;
             }
-            i++;
         }
 
-        System.out.print("<");
-        for (i = 0; i < n; i++) {
-            System.out.print(yo_list.poll());
-            if (i < n - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.print(">");
+        answer.append(">");
+        System.out.println(answer);
     }
 }
