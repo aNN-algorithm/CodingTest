@@ -1,60 +1,80 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static class Doc {
-        int index;
-        int imp;
+    static Map<Integer, Integer> map;
 
-        public Doc(int index, int imp) {
-            this.index = index;
-            this.imp = imp;
-        }
-    }
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
 
-
+        StringBuilder answer = new StringBuilder();
         for (int i = 0; i < T; i++) {
-            String[] comm = br.readLine().split(" ");
-            int N = Integer.parseInt(comm[0]);
-            int k = Integer.parseInt(comm[1]);
+            String[] commands1 = br.readLine().split(" ");
+            int n = Integer.parseInt(commands1[0]);
+            int cursor = Integer.parseInt(commands1[1]);
 
-            String docArray = br.readLine();
-            StringTokenizer st = new StringTokenizer(docArray);
-            ArrayList<Doc> docs = new ArrayList<>();
-            for (int j = 0; j < N; j++) {
-                docs.add(new Doc(j, Integer.parseInt(st.nextToken())));
+            Queue<Integer> printQueue = new LinkedList<>();
+            map = new HashMap<>();
+            String commands2 = br.readLine();
+            StringTokenizer st = new StringTokenizer(commands2);
+            for (int j = 0; j < n; j++) {
+                Integer important = Integer.parseInt(st.nextToken());
+                printQueue.add(important);
+                map.put(important, map.getOrDefault(important, 0) + 1);
             }
 
-            int printed = 0;
-            while (!docs.isEmpty()) {
-                Doc d = docs.get(0);
-                boolean isChanged = false;
+            int cnt = 0;
+            while (!printQueue.isEmpty()) {
+                Integer current = printQueue.peek(); // 현재 문서
+                if (cursor == 0) {
+                    // 나머지 문서들 중 현재 문서보다 중요한 문서가 있는지 확인
+                    if (isBiggerThanCurrentImportant(current)) {
+                        // 맨 앞 문서는 뒤로 이동
+                        printQueue.add(printQueue.poll());
+                        cursor = printQueue.size() - 1;
+                    } else {
+                        // 문서를 출력
+                        printQueue.remove();
 
-                for (int j = 1; j < docs.size(); j++) {
-                    if (d.imp < docs.get(j).imp) {
-                        docs.add(d);
-                        docs.remove(docs.get(0));
-                        isChanged = true;
+                        // 출력이 발생하므로
+                        cnt++;
+
+                        // 반복문 과정 종료
                         break;
                     }
-                }
+                } else {
+                    // 나머지 문서들 중 현재 문서보다 중요한 문서가 있는지 확인
+                    if (isBiggerThanCurrentImportant(current)) {
+                        // 맨 앞 문서는 뒤로 이동
+                        printQueue.add(printQueue.poll());
+                    } else {
+                        // 문서를 출력
+                        printQueue.remove();
 
-                if (!isChanged) {
-                    printed++;
-                    if (docs.get(0).index == k) {
-                        break;
+                        // 출력이 발생하므로
+                        cnt++;
                     }
-                    docs.remove(docs.get(0));
+
+                    // 맨 앞 문서가 출력이든, 뒤로 가든
+                    cursor--;
                 }
             }
-
-            System.out.println(printed);
+            answer.append(cnt).append("\n");
         }
+        System.out.println(answer);
+    }
+
+    private static boolean isBiggerThanCurrentImportant(Integer current) {
+        for (int i = current + 1; i < 10; i++) {
+            if (map.containsKey(i)) {
+                return true;
+            }
+        }
+        if (map.containsKey(current)) {
+            if (map.get(current) == 1) map.remove(current);
+            else map.put(current, map.get(current) - 1);
+        }
+        return false;
     }
 }
