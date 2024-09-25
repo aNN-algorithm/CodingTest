@@ -19,16 +19,12 @@ public class Main {
             }
 
             int cntNote2 = Integer.parseInt(br.readLine());
-            int[] note2 = new int[cntNote2];
             input = br.readLine();
             st = new StringTokenizer(input);
-            for (int j = 0; j < cntNote2; j++) {
-                note2[j] = Integer.parseInt(st.nextToken());
-            }
-
             StringBuilder answer = new StringBuilder();
             for (int j = 0; j < cntNote2; j++) {
-                answer.append(note1.containsKey(note2[j]) ? 1 : 0).append(" ");
+                int note2 = Integer.parseInt(st.nextToken());
+                answer.append(note1.containsKey(note2) ? 1 : 0).append(" ");
             }
             System.out.println(answer);
         }
