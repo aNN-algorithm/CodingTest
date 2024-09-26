@@ -13,7 +13,6 @@ public class Main {
         ArrayList<Integer>[] network = new ArrayList[numOfPC + 1];
         for (int i = 1; i <= numOfPC; i++) {
             network[i] = new ArrayList<>();
-            network[i].add(i);
         }
 
         int numOfEdges = Integer.parseInt(br.readLine());
@@ -32,22 +31,13 @@ public class Main {
         int answer = 0;
         while (!queueOfInfect.isEmpty()) {
             int cur = queueOfInfect.poll();
-//
-//            for (Integer x : network[cur]) {
-//                if (isInfected[x]) {
-//                    continue;
-//                }
-//                queueOfInfect.add(x);
-//                isInfected[x] = true;
-//                answer++;
-//            }
-            
-            for (int i = 0; i < network[cur].size(); i++) {
-                if (isInfected[network[cur].get(i)]) {
+
+            for (Integer x : network[cur]) {
+                if (isInfected[x]) {
                     continue;
                 }
-                queueOfInfect.add(network[cur].get(i));
-                isInfected[network[cur].get(i)] = true;
+                queueOfInfect.add(x);
+                isInfected[x] = true;
                 answer++;
             }
         }
