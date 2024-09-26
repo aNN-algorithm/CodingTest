@@ -16,8 +16,8 @@ public class Main {
             network[i].add(i);
         }
 
-        int numOfVertices = Integer.parseInt(br.readLine());
-        for (int i = 0; i < numOfVertices; i++) {
+        int numOfEdges = Integer.parseInt(br.readLine());
+        for (int i = 0; i < numOfEdges; i++) {
             String[] input = br.readLine().split(" ");
             int u = Integer.parseInt(input[0]);
             int v = Integer.parseInt(input[1]);
@@ -32,13 +32,22 @@ public class Main {
         int answer = 0;
         while (!queueOfInfect.isEmpty()) {
             int cur = queueOfInfect.poll();
-
-            for (int x : network[cur]) {
-                if (isInfected[x]) {
+//
+//            for (Integer x : network[cur]) {
+//                if (isInfected[x]) {
+//                    continue;
+//                }
+//                queueOfInfect.add(x);
+//                isInfected[x] = true;
+//                answer++;
+//            }
+            
+            for (int i = 0; i < network[cur].size(); i++) {
+                if (isInfected[network[cur].get(i)]) {
                     continue;
                 }
-                queueOfInfect.add(x);
-                isInfected[x] = true;
+                queueOfInfect.add(network[cur].get(i));
+                isInfected[network[cur].get(i)] = true;
                 answer++;
             }
         }
