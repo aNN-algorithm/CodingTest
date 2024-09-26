@@ -22,7 +22,7 @@ public class Main {
         Arrays.sort(arrA);
         Arrays.sort(arrB, Collections.reverseOrder());
 
-        Integer sum = 0;
+        int sum = 0;
         for (int i = 0; i < n; i++) {
             sum += arrA[i] * arrB[i];
         }
