@@ -1,48 +1,47 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Main {
-
-    public static void main(String[] args) throws IOException{
-
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int V = Integer.parseInt(br.readLine());
-        int n = Integer.parseInt(br.readLine());
+        int numOfPC = Integer.parseInt(br.readLine());
 
-        ArrayList<Integer>[] network = new ArrayList[V + 1];
-        int[] isVirus = new int[V + 1];
-        for (int i = 0; i < V + 1; i++) {
+        ArrayList<Integer>[] network = new ArrayList[numOfPC + 1];
+        for (int i = 1; i <= numOfPC; i++) {
             network[i] = new ArrayList<>();
+            network[i].add(i);
         }
 
-        for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
+        int numOfVertices = Integer.parseInt(br.readLine());
+        for (int i = 0; i < numOfVertices; i++) {
+            String[] input = br.readLine().split(" ");
+            int u = Integer.parseInt(input[0]);
+            int v = Integer.parseInt(input[1]);
             network[u].add(v);
             network[v].add(u);
         }
-        Queue<Integer> queue = new LinkedList<>();
-        int[] dx = {0, 1, 0, -1};
-        int[] dy = {-1, 0, 1, 0};
 
-        queue.add(1);
-        isVirus[1] = 1;
+        Queue<Integer> queueOfInfect = new LinkedList<>();
+        boolean[] isInfected = new boolean[numOfPC + 1];
+        isInfected[1] = true;
+        queueOfInfect.add(1);
         int answer = 0;
-        while (!queue.isEmpty()) {
-            int cur = queue.poll();
+        while (!queueOfInfect.isEmpty()) {
+            int cur = queueOfInfect.poll();
 
             for (int x : network[cur]) {
-                if (isVirus[x] == 0) {
-                    isVirus[x] = 1;
-                    queue.add(x);
-                    answer++;
+                if (isInfected[x]) {
+                    continue;
                 }
+                queueOfInfect.add(x);
+                isInfected[x] = true;
+                answer++;
             }
         }
-
         System.out.println(answer);
     }
 }
