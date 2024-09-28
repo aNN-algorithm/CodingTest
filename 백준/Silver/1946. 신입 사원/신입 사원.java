@@ -11,25 +11,23 @@ public class Main {
         StringBuilder answer = new StringBuilder();
         for (int i = 0; i < T; i++) {
             int N = Integer.parseInt(br.readLine());
-            int[][] testResult = new int[N][2];
+            int[] testResult = new int[N + 1];
 
             for (int j = 0; j < N; j++) {
-                StringTokenizer st = new StringTokenizer(br.readLine());
-                for (int k = 0; k < 2; k++) {
-                    testResult[j][k] = Integer.parseInt(st.nextToken());
-                }
+                String[] result = br.readLine().split(" ");
+                int docScore = Integer.parseInt(result[0]);
+                int intvScore = Integer.parseInt(result[1]);
+                testResult[docScore] = intvScore;
             }
-            Arrays.sort(testResult, (x1, x2) -> (x1[0] == x2[0] ? x1[1] - x2[1] : x1[0] - x2[0]));
 
-            int passingScore = testResult[0][1]; // 서류 심사 1등의 면접 순위
+            int passingScore = testResult[1]; // 서류 심사 1등의 면접 순위
             int cntPassed = 1;
-            for (int j = 0; j < N - 1; j++) {
-                if (testResult[j][1] < passingScore) {
+            for (int j = 1; j < N + 1; j++) {
+                if (passingScore > testResult[j]) {
+                    passingScore = testResult[j];
                     cntPassed++;
-                    passingScore = testResult[j][1];
                 }
             }
-            if (testResult[N - 1][1] == 1) cntPassed++;
             answer.append(cntPassed).append("\n");
         }
         System.out.println(answer);
