@@ -1,12 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static class Node {
+
+    public static class Node {
         int x;
         int y;
 
@@ -15,69 +14,62 @@ public class Main {
             this.y = y;
         }
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String comm = br.readLine();
-        int[] dx = {-1, 0, 1, 0};
-        int[] dy = {0, 1, 0, -1};
-
-        StringTokenizer st = new StringTokenizer(comm);
+        StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
 
         int[][] map = new int[n][m];
-        boolean[][] visited = new boolean[n][m];
-
         for (int i = 0; i < n; i++) {
-            comm = br.readLine();
-            st = new StringTokenizer(comm);
-
+            st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
+        boolean[][] isVisited = new boolean[n][m];
         Queue<Node> queue = new LinkedList<>();
-        int max = 0;
-        int cnt = 0;
-
+        int cntOfPic = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        // 시작점 찾기
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if(map[i][j] == 1 && visited[i][j] == false) {
-                    int tmp = 1;
-                    queue.add(new Node(i, j));
-                    visited[i][j] = true;
-                    cnt++;
+                if (map[i][j] == 0) continue;
+                // 방문 검증
+                if (isVisited[i][j]) continue;
 
-                    while (!queue.isEmpty()) {
-                        Node cur = queue.poll();
+                // 탐색할 노드
+                cntOfPic++; // 영역의 개수++;
+                queue.add(new Node(i, j)); // 1. 큐에 넣는다.
+                isVisited[i][j] = true; // 2. 큐에 넣었으면 방문한 것
+                int currentWidth = 1;
 
-                        for (int k = 0; k < 4; k++) {
-                            int nx = cur.x + dx[k];
-                            int ny = cur.y + dy[k];
+                while (!queue.isEmpty()) {
+                    Node cur = queue.poll(); // cur의 상하좌우를 보겠다!
 
-                            if (nx < 0 || ny < 0 || nx >= n || ny >= m) {
-                                continue;
-                            }
-                            if (visited[nx][ny] == true || map[nx][ny] != 1) {
-                                continue;
-                            }
+                    // 상하좌우 이동
+                    int[] dx = {0, 1, 0, -1};
+                    int[] dy = {-1, 0, 1, 0};
+                    for (int k = 0; k < 4; k++) {
+                        int nx = cur.x + dx[k];
+                        int ny = cur.y + dy[k];
 
-                            queue.add(new Node(nx, ny));
-                            visited[nx][ny] = true;
-                            tmp++;
-                        }
-                    }
+                        if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+                        if (isVisited[nx][ny] || map[nx][ny] == 0) continue;
 
-                    if (max < tmp) {
-                        max = tmp;
+                        // 탐색할 노드
+                        queue.add(new Node(nx, ny));
+                        isVisited[nx][ny] = true;
+                        currentWidth++;
                     }
                 }
+
+                pq.add(currentWidth);
             }
         }
-
-        System.out.println(cnt);
-        System.out.println(max);
-
+        System.out.println(cntOfPic); // 그림의 개수
+        System.out.println(pq.isEmpty() ? 0 : pq.peek()); // 그림의 넓이
     }
 }
