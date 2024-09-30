@@ -1,12 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static class Node {
+
+    public static class Node {
         int x;
         int y;
 
@@ -15,62 +14,48 @@ public class Main {
             this.y = y;
         }
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String comm = br.readLine();
-        int T = Integer.parseInt(comm);
+        int T = Integer.parseInt(br.readLine());
 
+        StringBuilder answer = new StringBuilder();
         for (int i = 0; i < T; i++) {
-            comm = br.readLine();
-            int n = Integer.parseInt(comm);
+            int mapSize = Integer.parseInt(br.readLine());
+            int[][] map = new int[mapSize][mapSize];
+            boolean[][] isVisited = new boolean[mapSize][mapSize];
 
-            comm = br.readLine();
-            StringTokenizer st = new StringTokenizer(comm);
-            int x1 = Integer.parseInt(st.nextToken());
-            int y1 = Integer.parseInt(st.nextToken());
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int startX = Integer.parseInt(st.nextToken());
+            int startY = Integer.parseInt(st.nextToken());
 
-            comm = br.readLine();
-            st = new StringTokenizer(comm);
-            int x2 = Integer.parseInt(st.nextToken());
-            int y2 = Integer.parseInt(st.nextToken());
-
-            int[] dx = {1, 2, 2, 1, -1, -2, -2, -1};
-            int[] dy = {-2, -1, 1, 2, 2, 1, -1, -2};
-            int[][] map = new int[n][n];
-            int[][] visited = new int[n][n];
-
-            for (int j = 0; j < n; j++) {
-                for (int k = 0; k < n; k++) {
-                    visited[j][k] = -1;
-                }
-            }
+            st = new StringTokenizer(br.readLine());
+            int endX = Integer.parseInt(st.nextToken());
+            int endY = Integer.parseInt(st.nextToken());
 
             Queue<Node> queue = new LinkedList<>();
-            queue.add(new Node(x1, y1));
-            visited[x1][y1] = 0;
+            queue.add(new Node(startX, startY));
+            isVisited[startX][startY] = true;
+            map[startX][startY] = 0;
             while (!queue.isEmpty()) {
                 Node cur = queue.poll();
 
-                if (cur.x == x2 && cur.y == y2) {
-                    break;
-                }
-
+                int[] dx = {-1, 1, 2, 2, 1, -1, -2, -2};
+                int[] dy = {-2, -2, -1, 1, 2, 2, 1, -1};
                 for (int j = 0; j < 8; j++) {
                     int nx = cur.x + dx[j];
                     int ny = cur.y + dy[j];
 
-                    if (nx < 0 || ny < 0 || nx >= n || ny >= n) {
-                        continue;
-                    }
-                    if (visited[nx][ny] > 0) {
-                        continue;
-                    }
+                    if (nx < 0 || ny < 0 || nx >= mapSize || ny >= mapSize) continue;
+                    if (isVisited[nx][ny]) continue;
 
                     queue.add(new Node(nx, ny));
-                    visited[nx][ny] = visited[cur.x][cur.y] + 1;
+                    isVisited[nx][ny] = true;
+                    map[nx][ny] = map[cur.x][cur.y] + 1;
                 }
             }
-            System.out.println(visited[x2][y2]);
+            answer.append(map[endX][endY]).append("\n");
         }
+        System.out.println(answer);
     }
 }
