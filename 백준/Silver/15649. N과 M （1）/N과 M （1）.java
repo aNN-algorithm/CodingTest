@@ -18,7 +18,7 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        arr = new int[n];
+        arr = new int[m];
         isUsed = new boolean[n + 1];
 
         answer = new StringBuilder();
@@ -32,6 +32,7 @@ public class Main {
                 answer.append(arr[i]).append(" ");
             }
             answer.append("\n");
+            return;
         }
 
         for (int i = 1; i <= n; i++) {
