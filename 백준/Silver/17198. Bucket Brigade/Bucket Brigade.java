@@ -30,29 +30,29 @@ public class Main {
         Queue<Node> queue = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (farm[i][j] == 'L') {
-                    queue.add(new Node(i, j, 0));
-                    isVisited[i][j] = true;
+                if (farm[i][j] == '.' || farm[i][j] == 'B' || farm[i][j] == 'R') continue;
 
-                    while (!queue.isEmpty()) {
-                        Node cur = queue.poll();
+                queue.add(new Node(i, j, 0));
+                isVisited[i][j] = true;
 
-                        int[] dx = {0, -1, 0, 1};
-                        int[] dy = {-1, 0, 1, 0};
-                        for (int k = 0; k < 4; k++) {
-                            int nx = cur.x + dx[k];
-                            int ny = cur.y + dy[k];
+                while (!queue.isEmpty()) {
+                    Node cur = queue.poll();
 
-                            if (nx < 0 || ny < 0 || nx >= 10 || ny >= 10) continue;
-                            if (farm[nx][ny] == 'R' || isVisited[nx][ny]) continue;
-                            if (farm[nx][ny] == 'B') {
-                                System.out.println(cur.channel);
-                                return;
-                            }
+                    int[] dx = {0, -1, 0, 1};
+                    int[] dy = {-1, 0, 1, 0};
+                    for (int k = 0; k < 4; k++) {
+                        int nx = cur.x + dx[k];
+                        int ny = cur.y + dy[k];
 
-                            queue.add(new Node(nx, ny, cur.channel + 1));
-                            isVisited[nx][ny] = true;
+                        if (nx < 0 || ny < 0 || nx >= 10 || ny >= 10) continue;
+                        if (farm[nx][ny] == 'R' || isVisited[nx][ny]) continue;
+                        if (farm[nx][ny] == 'B') {
+                            System.out.println(cur.channel);
+                            return;
                         }
+
+                        queue.add(new Node(nx, ny, cur.channel + 1));
+                        isVisited[nx][ny] = true;
                     }
                 }
             }
