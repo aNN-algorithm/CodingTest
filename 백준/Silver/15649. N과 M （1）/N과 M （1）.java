@@ -1,45 +1,45 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static int N;
-    static int M;
-    static boolean[] visited;
+
+    static int n;
+    static int m;
     static int[] arr;
-
-    public static void func(int cur) {
-        if (cur == M) {
-            for (int i = 0; i < M; i++) {
-                System.out.print(arr[i] + " ");
-            }
-            System.out.println();
-            return;
-        }
-
-
-        for (int i = 1; i <= N; i++) {
-            if (visited[i] == true) {
-                continue;
-            }
-            visited[i] = true;
-            arr[cur] = i;
-            func(cur + 1);
-            visited[i] = false;
-        }
-    }
+    static boolean[] isUsed;
+    static StringBuilder answer;
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String comm = br.readLine();
-        StringTokenizer st = new StringTokenizer(comm);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        visited = new boolean[N + 1];
-        arr = new int[N];
+        arr = new int[n];
+        isUsed = new boolean[n + 1];
 
-        func(0);
+        answer = new StringBuilder();
+        backTracking(0, 0);
+        System.out.println(answer);
+    }
+
+    private static void backTracking(int cur, int len) {
+        if (cur == m) {
+            for (int i = 0; i < m; i++) {
+                answer.append(arr[i]).append(" ");
+            }
+            answer.append("\n");
+        }
+
+        for (int i = 1; i <= n; i++) {
+            if (isUsed[i]) continue;
+            arr[cur] = i;
+            isUsed[i] = true;
+            backTracking(cur + 1, len);
+            isUsed[i] = false;
+        }
     }
 }
