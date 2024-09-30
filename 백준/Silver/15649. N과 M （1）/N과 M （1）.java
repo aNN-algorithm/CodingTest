@@ -22,11 +22,11 @@ public class Main {
         isUsed = new boolean[n + 1];
 
         answer = new StringBuilder();
-        backTracking(0, 0);
+        backTracking(0);
         System.out.println(answer);
     }
 
-    private static void backTracking(int cur, int len) {
+    private static void backTracking(int cur) {
         if (cur == m) {
             for (int i = 0; i < m; i++) {
                 answer.append(arr[i]).append(" ");
@@ -38,7 +38,7 @@ public class Main {
             if (isUsed[i]) continue;
             arr[cur] = i;
             isUsed[i] = true;
-            backTracking(cur + 1, len);
+            backTracking(cur + 1);
             isUsed[i] = false;
         }
     }
