@@ -1,57 +1,53 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static class Pair {
-        int tmp;
-        int sec;
 
-        public Pair(int tmp, int sec) {
-            this.tmp = tmp;
-            this.sec = sec;
+    final static int MAX_POS = 100000;
+
+    public static class position {
+        int pos;
+        int time;
+
+        public position(int pos, int time) {
+            this.pos = pos;
+            this.time = time;
         }
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String comm = br.readLine();
-        StringTokenizer st = new StringTokenizer(comm);
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int X = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-        int[] visited = new int[100005];
+        Queue<position> queue = new LinkedList<>();
+        boolean[] isVisited = new boolean[MAX_POS + 1];
 
-        Queue<Pair> queue = new LinkedList<>();
-        int cnt = 0;
-        queue.add(new Pair(N, 0));
-        visited[N] = 1;
+        queue.add(new position(n, 0));
+        isVisited[n] = true;
 
         while (!queue.isEmpty()) {
-            Pair cur = queue.poll();
+            position cur = queue.poll();
 
-            if (cur.tmp == X) {
-                cnt = cur.sec;
-                break;
+            if (cur.pos == k) {
+                System.out.println(cur.time);
+                return;
             }
+            
+            int[] d = {-1, 1, cur.pos};
+            for (int i = 0; i < 3; i++) {
+                int x = cur.pos + d[i];
+                
+                if (x < 0 || x > MAX_POS) continue;
+                if (isVisited[x]) continue;
 
-            if (cur.tmp - 1 >= 0 && visited[cur.tmp - 1] == 0) {
-                queue.add(new Pair(cur.tmp - 1, cur.sec + 1));
-                visited[cur.tmp - 1] = 1;
-            }
-            if (cur.tmp + 1 <= 100000 && visited[cur.tmp + 1] == 0) {
-                queue.add(new Pair(cur.tmp + 1, cur.sec + 1));
-                visited[cur.tmp + 1] = 1;
-            }
-            if (cur.tmp * 2 <= 100000 && visited[cur.tmp * 2] == 0) {
-                queue.add(new Pair(cur.tmp * 2, cur.sec + 1));
-                visited[cur.tmp * 2] = 1;
+                queue.add(new position(x, cur.time + 1));
+                isVisited[x] = true;
             }
         }
-
-        System.out.println(cnt);
     }
 }
