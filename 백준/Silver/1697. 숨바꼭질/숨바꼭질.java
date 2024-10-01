@@ -37,11 +37,10 @@ public class Main {
                 System.out.println(cur.time);
                 return;
             }
-            
-            int[] d = {-1, 1, cur.pos};
-            for (int i = 0; i < 3; i++) {
-                int x = cur.pos + d[i];
-                
+
+            for (int d : new int[]{-1, 1, cur.pos}) {
+                int x = cur.pos + d;
+
                 if (x < 0 || x > MAX_POS) continue;
                 if (isVisited[x]) continue;
 
