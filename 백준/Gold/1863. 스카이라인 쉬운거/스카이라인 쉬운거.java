@@ -27,8 +27,7 @@ public class Main {
             stack.push(y);
         }
 
-        while (!stack.isEmpty())
-        {
+        while (!stack.isEmpty()) {
             if(stack.peek() > 0) {
                 cntOfBuilding++;
             }
