@@ -51,8 +51,6 @@ public class Main {
 
     private static void checkBingo(int x, int y) {
         bingo[x][y]++;
-        if (bingo[x][y] == BINGO_SIZE) {
-            cntBingo++;
-        }
+        if (bingo[x][y] == BINGO_SIZE) cntBingo++;
     }
 }
