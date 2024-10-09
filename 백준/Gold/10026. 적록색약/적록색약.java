@@ -1,11 +1,15 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static class Node {
+
+    static int n;
+    static char[][] grid;
+
+    public static class Node {
         int x;
         int y;
 
@@ -14,118 +18,61 @@ public class Main {
             this.y = y;
         }
     }
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String comm = br.readLine();
-        int N = Integer.parseInt(comm);
+        n = Integer.parseInt(br.readLine());
+        grid = new char[n][n];
 
-        char[][] map = new char[N][N];
-        for (int i = 0; i < N; i++) {
-            comm = br.readLine();
-            for (int j = 0; j < N; j++) {
-                map[i][j] = comm.charAt(j);
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            grid[i] = st.nextToken().toCharArray();
+        }
+
+        StringBuilder answer = new StringBuilder();
+        answer.append(bfs()).append(" ");
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 'G') grid[i][j] = 'R';
             }
         }
 
-        boolean[][] visited = new boolean[N][N];
+        answer.append(bfs());
+        System.out.println(answer);
+    }
+
+    private static int bfs() {
+        int cnt = 0;
+        boolean[][] isVisited = new boolean[n][n];
         Queue<Node> queue = new LinkedList<>();
-        int[] dx = {0, 1, 0, -1};
-        int[] dy = {-1, 0, 1, 0};
 
-        int gCnt = 0;
-        int rCnt = 0;
-        int bCnt = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (isVisited[i][j]) continue;
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (visited[i][j] == false) {
-                    if (map[i][j] == 'B') {
-                        bCnt++;
-                    } else if (map[i][j] == 'G') {
-                        gCnt++;
-                    } else if (map[i][j] == 'R') {
-                        rCnt++;
-                    }
+                cnt++;
 
-                    visited[i][j] = true;
-                    queue.add(new Node(i, j));
-                    while (!queue.isEmpty()) {
-                        Node cur = queue.poll();
+                queue.add(new Node(i, j));
+                isVisited[i][j] = true;
 
-                        for (int k = 0; k < 4; k++) {
-                            int nx = cur.x + dx[k];
-                            int ny = cur.y + dy[k];
+                int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+                while (!queue.isEmpty()) {
+                    Node cur = queue.poll();
 
-                            if (nx < 0 || ny < 0 || nx >= N || ny >= N) {
-                                continue;
-                            }
-                            if (visited[nx][ny] == true || map[nx][ny] != map[cur.x][cur.y]) {
-                                continue;
-                            }
+                    for (int k = 0; k < 4; k++) {
+                        int nx = cur.x + dir[k][0];
+                        int ny = cur.y + dir[k][1];
 
-                            visited[nx][ny] = true;
-                            queue.add(new Node(nx, ny));
-                        }
+                        if (nx < 0 || ny < 0 || nx >= n || ny >= n) continue;
+                        if (isVisited[nx][ny] || grid[i][j] != grid[nx][ny]) continue;
+
+                        queue.add(new Node(nx, ny));
+                        isVisited[nx][ny] = true;
                     }
                 }
             }
         }
-
-        int notIt = gCnt + rCnt + bCnt;
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (map[i][j] == 'G') {
-                    map[i][j] = 'R';
-                }
-            }
-        }
-
-        rCnt = 0;
-        bCnt = 0;
-        visited = new boolean[N][N];
-        queue = new LinkedList<>();
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-
-                if (visited[i][j] == false) {
-
-                    if (map[i][j] == 'B') {
-                        bCnt++;
-                    } else {
-                        rCnt++;
-                    }
-
-                    visited[i][j] = true;
-                    queue.add(new Node(i, j));
-                    while (!queue.isEmpty()) {
-                        Node cur = queue.poll();
-
-                        for (int k = 0; k < 4; k++) {
-                            int nx = cur.x + dx[k];
-                            int ny = cur.y + dy[k];
-
-                            if (nx < 0 || ny < 0 || nx >= N || ny >= N) {
-                                continue;
-                            }
-                            if (visited[nx][ny] == true) {
-                                continue;
-                            }
-                            if (visited[nx][ny] == true || map[nx][ny] != map[cur.x][cur.y]) {
-                                continue;
-                            }
-
-                            visited[nx][ny] = true;
-                            queue.add(new Node(nx, ny));
-                        }
-                    }
-                }
-            }
-        }
-
-        int isIt = bCnt + rCnt;
-
-        System.out.println(notIt + " " + isIt);
+        return cnt;
     }
 }
