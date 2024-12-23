@@ -1,65 +1,42 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 class Solution {
     public String solution(String new_id) {
-        
-                String temp_id = new_id.toLowerCase();
-
-        Deque<Character> answerQueue = new ArrayDeque<>();
+    
+        String temp_id = new_id.toLowerCase();
+        StringBuilder answer = new StringBuilder();
         for (int i = 0; i < temp_id.length(); i++) {
             char ch = temp_id.charAt(i);
-            if (ch >= 'a' && ch <= 'z') {
-                answerQueue.add(ch);
-                continue;
-            }
-
-            if (ch == '-' || ch == '_' || ch == '.') {
-                if (!answerQueue.isEmpty() && answerQueue.peekLast() == ch && ch == '.') {
+            if ((ch >= 'a' && ch <= 'z') || (ch == '-' || ch == '_' || ch == '.') || (ch >= '0' && ch <= '9')) {
+                if (answer.length() != 0 && answer.charAt(answer.length() - 1) == ch && ch == '.') {
                     continue;
                 }
-                answerQueue.add(ch);
-                continue;
-            }
-
-            if (ch >= '0' && ch <= '9') {
-                answerQueue.add(ch);
+                answer.append(ch);
             }
         }
 
-        if (!answerQueue.isEmpty() && answerQueue.peekFirst() == '.') {
-            answerQueue.removeFirst();
+        if (answer.length() != 0 && answer.charAt(answer.length() - 1) == '.') {
+            answer.deleteCharAt(answer.length() - 1);
         }
 
-        if (!answerQueue.isEmpty() && answerQueue.peekLast() == '.') {
-            answerQueue.removeLast();
+        if (answer.length() != 0 && answer.charAt(0) == '.') {
+            answer.deleteCharAt(0);
         }
 
-        if (answerQueue.isEmpty()) {
-            answerQueue.addLast('a');
+        if (answer.length() == 0) {
+            answer.append('a');
         }
 
-        while (answerQueue.size() > 15) {
-            answerQueue.removeLast();
-        }
-
-        if (answerQueue.peekLast() == '.') {
-            answerQueue.removeLast();
-        }
-
-        if (answerQueue.size() <= 2) {
-            while (answerQueue.size() <= 2) {
-                answerQueue.addLast(answerQueue.peekLast());
-            }
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        while (!answerQueue.isEmpty()) {
-            sb.append(answerQueue.removeFirst());
+        while (answer.length() > 15) {
+            answer.deleteCharAt(answer.length() - 1);
         }
         
-        String answer = sb.toString();
-        return answer;
+        if (answer.charAt(answer.length() - 1) == '.') {
+            answer.deleteCharAt(answer.length() - 1);
+        }
+
+        while (answer.length() <= 2) {
+            answer.append(answer.charAt(answer.length() - 1));
+        }
+        
+        return answer.toString();
     }
 }
